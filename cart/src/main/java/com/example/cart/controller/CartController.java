@@ -57,7 +57,7 @@ public class CartController {
     //
     private CartRepository cartRepository;
 
-    @org.jetbrains.annotations.NotNull
+
     @GetMapping
     private Cart new_process(){
 
