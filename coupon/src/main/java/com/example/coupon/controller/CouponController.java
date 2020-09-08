@@ -25,7 +25,7 @@ public class CouponController {
     }
 
     @GetMapping("/{couponCode}")
-    private Coupon getCoupon(@PathVariable("couponCode") String coupCode) {
+    private Coupon getCoupon(@PathVariable ("couponCode") String coupCode) {
         return couponService.getCouponbycouponCode(coupCode);
     }
 

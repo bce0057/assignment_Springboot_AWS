@@ -1,77 +1,114 @@
 package com.example.cart.controller;
 
 import com.example.cart.model.Cart;
-import com.example.cart.repository.CartRepository;
+import com.example.cart.model.CartAdd;
 import com.example.cart.service.CartServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping( "/cart")
+@RequestMapping("/cart")
 public class CartController {
     @Autowired
     CartServiceImpl cartService;
 
-    /*@GetMapping
+    /*@GetMapping method gets the products as string
     private  String getProductList(){
         return cartService.getProductList();
     }*/
 
 
-    private int getProductPrice(){
+    private int getProductPrice() {
 
-        return  cartService.getProductPrice();
+        String[] pr ={"PEN","NTB","INK"};
+
+        return cartService.getProductPrice(pr);
 
     }
 
-    private String getCoupon(){
-        return cartService.getCoupon();
+    private String getCoupon() {
+        String c = "25OFF";
+        return cartService.getCoupon(c);
     }
 
-    //@GetMapping
-    private String process(){
+    // //Displays output in String format
+    private String process() {
         int actualprice = getProductPrice();
-        double discprice = actualprice - (0.15*actualprice);
+        double discprice = actualprice - (0.15 * actualprice);
         return ("Total Price: ") + actualprice + "\n" + getCoupon() + "\n" + "Discounted Price:" + discprice;
     }
 
     @Autowired
-    private CartRepository cartRepository;
 
-    @GetMapping
-    private Cart save(){
+
+  // @GetMapping Hardcoded getmehod
+    private Cart disp() {
         Cart cart1 = new Cart();
         cart1.setTotal_price(getProductPrice());
         cart1.setCoupon(getCoupon());
-        cart1.setDisc_price(getProductPrice()- (0.15*getProductPrice()));
+        cart1.setDisc_price(getProductPrice() - (0.15 * getProductPrice()));
 
         //return cartRepository.save(cart1);
         return cart1;
 
     }
 
-/*
-    //
-    private CartRepository cartRepository;
-
 
     @GetMapping
-    private Cart new_process(){
+    public Cart dynamic_process(@RequestBody CartAdd cartAdd) {
 
-        Cart cart = new Cart();
-        cart.setTotal_price(getProductPrice());
-        cart.setCoupon(getCoupon());
-        cart.setDisc_price(getProductPrice()- (0.15*getProductPrice()));
-        return cart;
+        Cart cart2 = new Cart();
+        int sum = cartService.getProductPrice(cartAdd.getProducts());
+        int discperc = Integer.parseInt(cartService.getCoupon(cartAdd.getCoupcode()).replaceAll("[^0-9]", ""));
+        double disc_rate = sum - ((discperc * sum) / 100);
+
+        cart2.setDisc_price(disc_rate);
+        cart2.setCoupon(cartService.getCoupon(cartAdd.getCoupcode()));
+        cart2.setTotal_price(sum);
+
+        return cart2;
+
+    }
 
 
 
 
-    }8*/
+
+
+
+
+
+
+    /*
+
+// Dynamic method withod using CartAdd class ~ notworking error : Using RestTemplate in Spring. Exception- Not enough variables available to expand
+   public Cart dynamic_process(@RequestBody String[] prod, @RequestBody String coup_code) {
+
+       Cart cart2 = new Cart();
+       int sum = cartService.getProductPrice(prod);
+       int discperc = Integer.parseInt(cartService.getCoupon(coup_code).replaceAll("[^0-9]", ""));
+       double disc_rate = sum - ((discperc * sum) / 100);
+
+       cart2.setDisc_price(disc_rate);
+       cart2.setCoupon(cartService.getCoupon(coup_code));
+       cart2.setTotal_price(sum);
+
+       return cart2;
+
+   }
+
+
+*/
+
+
+
 
 
 
 }
+
+
+
+
+
+

@@ -1,13 +1,12 @@
 package com.example.cart.service;
 
+import com.example.cart.model.Coupon;
 import com.example.cart.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Arrays;
 
 @Service
 public class CartServiceImpl {
@@ -46,10 +45,10 @@ public class CartServiceImpl {
         return newstring;
     }*/
 
-    public int getProductPrice() {
+    public int getProductPrice(String[] products) {
 
         //Product product = new Product();
-        String products[] = {"NTB", "INK"};
+        //String products[] = {"NTB", "INK"};
 
 
         int pricesum=0;
@@ -62,11 +61,12 @@ public class CartServiceImpl {
         return pricesum;
     }
 
-    public String getCoupon(){
+    public String getCoupon(String code){
 
-        String coup = "15OFF";
+        //String coup = "15OFF";
 
-        return restTemplate.exchange(externalCouponUrl+coup, HttpMethod.GET, null, String.class).getBody();
+        ResponseEntity<Coupon> respons = restTemplate.getForEntity(externalCouponUrl+code,  Coupon.class);
+        return respons.getBody().getCouponCode();
 
 
     }

@@ -3,10 +3,10 @@ package com.example.cart.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
+//@Entity
 public class Cart {
 
-    @Id
+   // @Id
     int Total_price;
     String coupon;
     double disc_price;
