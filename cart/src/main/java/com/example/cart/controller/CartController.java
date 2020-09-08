@@ -38,7 +38,7 @@ public class CartController {
         return ("Total Price: ") + actualprice + "\n" + getCoupon() + "\n" + "Discounted Price:" + discprice;
     }
 
-    @Autowired
+
 
 
   // @GetMapping Hardcoded getmehod
@@ -53,7 +53,7 @@ public class CartController {
 
     }
 
-
+///*
     @GetMapping
     public Cart dynamic_process(@RequestBody CartAdd cartAdd) {
 
